@@ -169,7 +169,7 @@ class SetupCliTests(unittest.TestCase):
             delegated = run.call_args_list[2]
             arguments = delegated.args[0]
             environment = delegated.kwargs["env"]
-            self.assertIn(str(installer), arguments)
+            self.assertTrue(any(Path(argument).resolve() == installer.resolve() for argument in arguments))
             self.assertIn("-SkipConfigure", arguments)
             self.assertEqual(environment["TMCRA_CONFIG_FILE"], str(config))
             self.assertNotIn("TMCRA_API_KEY", environment)

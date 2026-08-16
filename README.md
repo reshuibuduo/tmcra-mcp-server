@@ -25,19 +25,19 @@ Generic MCP clients decide when to call tools. Connecting this server alone does
 
 ### MCPB release
 
-Download `tmcra-mcp-server-0.5.0.mcpb` from the [v0.5.0 release](https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/tag/v0.5.0) and open it in an MCPB-compatible client. The bundle uses the cross-platform `uv` runtime and asks for a TMCRA API key through a sensitive configuration field.
+Download `tmcra-mcp-server-0.5.1.mcpb` from the [v0.5.1 release](https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/tag/v0.5.1) and open it in an MCPB-compatible client. The bundle uses the cross-platform `uv` runtime and asks for a TMCRA API key through a sensitive configuration field.
 
 ### Python wheel
 
 ```bash
 python -m pip install \
-  https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/download/v0.5.0/tmcra_mcp_server-0.5.0-py3-none-any.whl
+  https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/download/v0.5.1/tmcra_mcp_server-0.5.1-py3-none-any.whl
 ```
 
 ### Directly from GitHub with `uvx`
 
 ```bash
-uvx --from "git+https://github.com/reshuibuduo/TMCRA-MCP-Server@v0.5.0" tmcra-mcp
+uvx --from "git+https://github.com/reshuibuduo/TMCRA-MCP-Server@v0.5.1" tmcra-mcp
 ```
 
 ## Authorize

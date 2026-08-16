@@ -20,19 +20,19 @@ TMCRA MCP Server 让支持 MCP 的 Agent 工具显式调用长期记忆。它可
 
 ### MCPB 安装包
 
-从 [v0.5.0 Release](https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/tag/v0.5.0) 下载 `tmcra-mcp-server-0.5.0.mcpb`，在支持 MCPB 的客户端中打开。安装包使用跨平台 `uv` 运行时，并通过敏感配置项接收 TMCRA API Key。
+从 [v0.5.1 Release](https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/tag/v0.5.1) 下载 `tmcra-mcp-server-0.5.1.mcpb`，在支持 MCPB 的客户端中打开。安装包使用跨平台 `uv` 运行时，并通过敏感配置项接收 TMCRA API Key。
 
 ### Python wheel
 
 ```bash
 python -m pip install \
-  https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/download/v0.5.0/tmcra_mcp_server-0.5.0-py3-none-any.whl
+  https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/download/v0.5.1/tmcra_mcp_server-0.5.1-py3-none-any.whl
 ```
 
 ### 使用 `uvx` 直接运行 GitHub 版本
 
 ```bash
-uvx --from "git+https://github.com/reshuibuduo/TMCRA-MCP-Server@v0.5.0" tmcra-mcp
+uvx --from "git+https://github.com/reshuibuduo/TMCRA-MCP-Server@v0.5.1" tmcra-mcp
 ```
 
 ## 授权

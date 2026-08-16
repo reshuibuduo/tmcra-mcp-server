@@ -2,7 +2,7 @@
   "manifest_version": "0.4",
   "name": "tmcra-memory",
   "display_name": "TMCRA Agent Memory",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Explicit long-term Agent memory for MCP hosts",
   "long_description": "Recall project evidence, preserve user and Agent roles, commit real turns, and reconcile durable asynchronous writes through the TMCRA Memory API.",
   "author": {
