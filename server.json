@@ -1,0 +1,22 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.reshuibuduo/tmcra-mcp-server",
+  "title": "TMCRA Agent Memory",
+  "description": "Explicit long-term Agent memory for MCP hosts, with role-aware writes, multi-Agent project scope, and durable reconciliation.",
+  "repository": {
+    "url": "https://github.com/reshuibuduo/TMCRA-MCP-Server",
+    "source": "github"
+  },
+  "websiteUrl": "https://tmcra.com",
+  "version": "0.5.0",
+  "packages": [
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/download/v0.5.0/tmcra-mcp-server-0.5.0.mcpb",
+      "fileSha256": "03ed75c159167fb64461c89dac3d8aaec64223c2c286b8728d5dff2759e7fc4b",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

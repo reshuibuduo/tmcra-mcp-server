@@ -1,0 +1,116 @@
+{
+  "manifest_version": "0.4",
+  "name": "tmcra-memory",
+  "display_name": "TMCRA Agent Memory",
+  "version": "0.5.0",
+  "description": "Explicit long-term Agent memory for MCP hosts",
+  "long_description": "Recall project evidence, preserve user and Agent roles, commit real turns, and reconcile durable asynchronous writes through the TMCRA Memory API.",
+  "author": {
+    "name": "Yu Haoxin",
+    "url": "https://github.com/reshuibuduo"
+  },
+  "homepage": "https://tmcra.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reshuibuduo/TMCRA-MCP-Server"
+  },
+  "icon": "icon.png",
+  "server": {
+    "type": "uv",
+    "entry_point": "src/tmcra_mcp/__main__.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${__dirname}",
+        "tmcra-mcp"
+      ],
+      "env": {
+        "TMCRA_API_KEY": "${user_config.api_key}",
+        "TMCRA_BASE_URL": "${user_config.base_url}",
+        "TMCRA_DEFAULT_SCOPE": "${user_config.default_scope}",
+        "TMCRA_AGENT_ID": "${user_config.agent_id}"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "tmcra_recall",
+      "description": "Recall bounded prompt-ready evidence for one query"
+    },
+    {
+      "name": "tmcra_ingest",
+      "description": "Persist messages that have already occurred"
+    },
+    {
+      "name": "tmcra_turn_prepare",
+      "description": "Prepare recall and bind the real user turn before an answer"
+    },
+    {
+      "name": "tmcra_turn_commit",
+      "description": "Commit the prepared user turn and exact assistant answer"
+    },
+    {
+      "name": "tmcra_reconcile",
+      "description": "Retry durable pending writes"
+    },
+    {
+      "name": "tmcra_get_job",
+      "description": "Inspect one asynchronous write job"
+    },
+    {
+      "name": "tmcra_wait_job",
+      "description": "Wait for a write job to reach a terminal state"
+    }
+  ],
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "TMCRA API Key",
+      "description": "Create an API key after signing in to TMCRA",
+      "sensitive": true,
+      "required": true
+    },
+    "base_url": {
+      "type": "string",
+      "title": "TMCRA API Base URL",
+      "description": "HTTPS origin for the TMCRA Memory API",
+      "default": "https://api.tmcra.com",
+      "required": true
+    },
+    "default_scope": {
+      "type": "string",
+      "title": "Default Project Scope",
+      "description": "Stable project scope used when a tool call omits scope",
+      "required": false
+    },
+    "agent_id": {
+      "type": "string",
+      "title": "Default Agent ID",
+      "description": "Optional producer attribution for this MCP host",
+      "required": false
+    }
+  },
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "linux",
+      "win32"
+    ],
+    "runtimes": {
+      "python": ">=3.10"
+    }
+  },
+  "keywords": [
+    "agent-memory",
+    "cross-session",
+    "mcp",
+    "multi-agent",
+    "tmcra"
+  ],
+  "license": "Apache-2.0",
+  "privacy_policies": [
+    "https://tmcra.com/privacy"
+  ]
+}

@@ -1,0 +1,11 @@
+.git/
+.github/
+.pytest_cache/
+.venv/
+build/
+dist/
+tests/
+*.egg-info/
+**/__pycache__/
+**/*.py[cod]
+server.json
