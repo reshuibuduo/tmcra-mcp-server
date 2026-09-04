@@ -4,7 +4,7 @@
   "title": "TMCRA Agent Memory",
   "description": "Role-aware Agent memory with cross-session recall, durable writes, and multi-Agent project scope.",
   "repository": {
-    "url": "https://github.com/reshuibuduo/TMCRA-MCP-Server",
+    "url": "https://github.com/reshuibuduo/tmcra-mcp-server",
     "source": "github"
   },
   "websiteUrl": "https://tmcra.com",
@@ -12,7 +12,7 @@
   "packages": [
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/download/v0.5.1/tmcra-mcp-server-0.5.1.mcpb",
+      "identifier": "https://github.com/reshuibuduo/tmcra-mcp-server/releases/download/v0.5.1/tmcra-mcp-server-0.5.1.mcpb",
       "fileSha256": "d12ff1bb42907935aa7f092d331fe6adb58968b80b9676420a827db2b04d14b9",
       "transport": {
         "type": "stdio"

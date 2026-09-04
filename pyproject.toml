@@ -37,9 +37,9 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://tmcra.com"
-Documentation = "https://github.com/reshuibuduo/TMCRA-MCP-Server#readme"
-Repository = "https://github.com/reshuibuduo/TMCRA-MCP-Server"
-Issues = "https://github.com/reshuibuduo/TMCRA-MCP-Server/issues"
+Documentation = "https://github.com/reshuibuduo/tmcra-mcp-server#readme"
+Repository = "https://github.com/reshuibuduo/tmcra-mcp-server"
+Issues = "https://github.com/reshuibuduo/tmcra-mcp-server/issues"
 
 [project.optional-dependencies]
 dev = [

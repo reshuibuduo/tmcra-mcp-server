@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Normalize repository, release, and companion Codex plugin links after the standalone repository renames.
+
 ## 0.5.1 - 2026-08-16
 
 - Make the Windows setup test robust to short-path and long-path normalization on GitHub runners.

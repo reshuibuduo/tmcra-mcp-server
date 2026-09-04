@@ -2,7 +2,7 @@
 
 # TMCRA MCP Server
 
-[![Tests](https://github.com/reshuibuduo/TMCRA-MCP-Server/actions/workflows/test.yml/badge.svg)](https://github.com/reshuibuduo/TMCRA-MCP-Server/actions/workflows/test.yml)
+[![Tests](https://github.com/reshuibuduo/tmcra-mcp-server/actions/workflows/test.yml/badge.svg)](https://github.com/reshuibuduo/tmcra-mcp-server/actions/workflows/test.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 TMCRA MCP Server gives MCP hosts explicit access to long-term Agent memory. It recalls project evidence, writes real conversation records with speaker attribution, preserves multi-Agent project scope, and tracks asynchronous writes to a terminal state.
@@ -19,25 +19,25 @@ TMCRA MCP Server gives MCP hosts explicit access to long-term Agent memory. It r
 - **Verifiable receipts.** Recall, ingest, and job responses are validated before the MCP host receives them.
 - **Seven real MCP tools.** Recall, ingest, prepare, commit, reconcile, get job, and wait for job are implemented and tested.
 
-Generic MCP clients decide when to call tools. Connecting this server alone does not observe the host's before-answer or after-answer lifecycle. For automatic Codex recall and capture, install the separate [TMCRA Codex Memory plugin](https://github.com/reshuibuduo/TMCRA-Codex-Memory).
+Generic MCP clients decide when to call tools. Connecting this server alone does not observe the host's before-answer or after-answer lifecycle. For automatic Codex recall and capture, install the separate [TMCRA Codex Memory plugin](https://github.com/reshuibuduo/tmcra-plugin-codex).
 
 ## Install
 
 ### MCPB release
 
-Download `tmcra-mcp-server-0.5.1.mcpb` from the [v0.5.1 release](https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/tag/v0.5.1) and open it in an MCPB-compatible client. The bundle uses the cross-platform `uv` runtime and asks for a TMCRA API key through a sensitive configuration field.
+Download `tmcra-mcp-server-0.5.1.mcpb` from the [v0.5.1 release](https://github.com/reshuibuduo/tmcra-mcp-server/releases/tag/v0.5.1) and open it in an MCPB-compatible client. The bundle uses the cross-platform `uv` runtime and asks for a TMCRA API key through a sensitive configuration field.
 
 ### Python wheel
 
 ```bash
 python -m pip install \
-  https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/download/v0.5.1/tmcra_mcp_server-0.5.1-py3-none-any.whl
+  https://github.com/reshuibuduo/tmcra-mcp-server/releases/download/v0.5.1/tmcra_mcp_server-0.5.1-py3-none-any.whl
 ```
 
 ### Directly from GitHub with `uvx`
 
 ```bash
-uvx --from "git+https://github.com/reshuibuduo/TMCRA-MCP-Server@v0.5.1" tmcra-mcp
+uvx --from "git+https://github.com/reshuibuduo/tmcra-mcp-server@v0.5.1" tmcra-mcp
 ```
 
 ## Authorize

@@ -14,25 +14,25 @@ TMCRA MCP Server 让支持 MCP 的 Agent 工具显式调用长期记忆。它可
 - **结果可核验。** 召回、写入和任务状态必须通过结构化 receipt 校验。
 - **七个真实 MCP 工具。** 召回、写入、准备回合、提交回合、恢复队列、查询任务、等待任务均有实现和测试。
 
-普通 MCP 客户端决定何时调用工具。仅连接 MCP Server 不会自动观察回答前后的生命周期。Codex 需要自动召回与写回时，请安装独立的 [TMCRA Codex Memory 插件](https://github.com/reshuibuduo/TMCRA-Codex-Memory)。
+普通 MCP 客户端决定何时调用工具。仅连接 MCP Server 不会自动观察回答前后的生命周期。Codex 需要自动召回与写回时，请安装独立的 [TMCRA Codex Memory 插件](https://github.com/reshuibuduo/tmcra-plugin-codex)。
 
 ## 安装
 
 ### MCPB 安装包
 
-从 [v0.5.1 Release](https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/tag/v0.5.1) 下载 `tmcra-mcp-server-0.5.1.mcpb`，在支持 MCPB 的客户端中打开。安装包使用跨平台 `uv` 运行时，并通过敏感配置项接收 TMCRA API Key。
+从 [v0.5.1 Release](https://github.com/reshuibuduo/tmcra-mcp-server/releases/tag/v0.5.1) 下载 `tmcra-mcp-server-0.5.1.mcpb`，在支持 MCPB 的客户端中打开。安装包使用跨平台 `uv` 运行时，并通过敏感配置项接收 TMCRA API Key。
 
 ### Python wheel
 
 ```bash
 python -m pip install \
-  https://github.com/reshuibuduo/TMCRA-MCP-Server/releases/download/v0.5.1/tmcra_mcp_server-0.5.1-py3-none-any.whl
+  https://github.com/reshuibuduo/tmcra-mcp-server/releases/download/v0.5.1/tmcra_mcp_server-0.5.1-py3-none-any.whl
 ```
 
 ### 使用 `uvx` 直接运行 GitHub 版本
 
 ```bash
-uvx --from "git+https://github.com/reshuibuduo/TMCRA-MCP-Server@v0.5.1" tmcra-mcp
+uvx --from "git+https://github.com/reshuibuduo/tmcra-mcp-server@v0.5.1" tmcra-mcp
 ```
 
 ## 授权
