@@ -8,12 +8,12 @@
     "source": "github"
   },
   "websiteUrl": "https://tmcra.com",
-  "version": "0.5.1",
+  "version": "1.0.0-rc.1",
   "packages": [
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/reshuibuduo/tmcra-mcp-server/releases/download/v0.5.1/tmcra-mcp-server-0.5.1.mcpb",
-      "fileSha256": "d12ff1bb42907935aa7f092d331fe6adb58968b80b9676420a827db2b04d14b9",
+      "identifier": "https://github.com/reshuibuduo/tmcra-mcp-server/releases/download/v1.0.0-rc.1/tmcra-mcp-server-1.0.0-rc.1.mcpb",
+      "fileSha256": "714d649a527d55498ce9bcb4f0981934848c5d5bde2398f4cec0243128fb5860",
       "transport": {
         "type": "stdio"
       }

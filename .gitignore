@@ -7,3 +7,4 @@ dist/
 **/*.py[cod]
 *.mcpb
 *.sha256
+test-artifacts/

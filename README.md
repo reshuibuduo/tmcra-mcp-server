@@ -17,7 +17,11 @@ TMCRA MCP Server gives MCP hosts explicit access to long-term Agent memory. It r
 - **Explicit turn lifecycle.** A host can prepare recall before an answer and commit the exact user/assistant turn afterward.
 - **Durable write recovery.** Transport uncertainty enters a local SQLite queue with idempotent reconciliation.
 - **Verifiable receipts.** Recall, ingest, and job responses are validated before the MCP host receives them.
-- **Seven real MCP tools.** Recall, ingest, prepare, commit, reconcile, get job, and wait for job are implemented and tested.
+- **Nine MCP tools.** Recall, ingest, prepare, commit, reconcile, get job, wait for job, session memory controls, and targeted feedback.
+
+`tmcra_memory_control` exposes task selection, a 12000-character default recall budget, and `normal`, `recall_only`, `off` modes. Pass the exact same `session_id` to recall/prepare and controls. Pending older generations are discarded after a mode change; already submitted jobs remain submitted. `tmcra_feedback` supports `ignore`, `correct` (user-supplied replacement), and `restore` with a stable idempotency key. Effective feedback requires the matching backend update; check `correction_index_status` separately. The visual control panel is provided by the Codex and DSH distributions. This MCP package automatically discovers the shared local installation; numeric loopback HTTP is permitted only for an explicit local identity. Hosted connections require HTTPS.
+
+Conversational corrections now require interactive host confirmation. On an actual correction request, call `tmcra_memory_control(operation="correction_start")` before clarification or feedback to suppress automatic capture of that discussion turn. `tmcra_feedback` reads exact original evidence and uses MCP form elicitation to show the source, replacement and scope; only explicit acceptance submits feedback. Rejection, cancellation, expiry or an unsupported host leaves memory unchanged. Do not substitute ingestion for a rejected correction. Host lifecycle turn IDs protect the discussion from later queue replay while preserving other identified turns. A third-party host must route elicitation to its user; the server cannot guarantee that an arbitrary client will not answer automatically. Hypothetical/quoted correction language is not authorization.
 
 Generic MCP clients decide when to call tools. Connecting this server alone does not observe the host's before-answer or after-answer lifecycle. For automatic Codex recall and capture, install the separate [TMCRA Codex Memory plugin](https://github.com/reshuibuduo/tmcra-plugin-codex).
 
@@ -25,19 +29,19 @@ Generic MCP clients decide when to call tools. Connecting this server alone does
 
 ### MCPB release
 
-Download `tmcra-mcp-server-0.5.1.mcpb` from the [v0.5.1 release](https://github.com/reshuibuduo/tmcra-mcp-server/releases/tag/v0.5.1) and open it in an MCPB-compatible client. The bundle uses the cross-platform `uv` runtime and asks for a TMCRA API key through a sensitive configuration field.
+Download `tmcra-mcp-server-1.0.0-rc.1.mcpb` from the [v1.0.0-rc.1 release](https://github.com/reshuibuduo/tmcra-mcp-server/releases/tag/v1.0.0-rc.1) and open it in an MCPB-compatible client. The bundle uses the cross-platform `uv` runtime. Hosted service users enter their API key in the sensitive field. For account-free Windows local memory, extract the [standalone runtime](https://github.com/reshuibuduo/tmcra/releases/tag/v1.0.0-rc.1), double-click `Install-Local.cmd`, then restart the MCP host. The local identity is discovered automatically and overrides the form's cloud URL/key; keep the API key blank for this mode. Explicit advanced `TMCRA_CONFIG_FILE` overrides remain authoritative. Local model acceptance limitations are documented in the runtime release.
 
 ### Python wheel
 
 ```bash
 python -m pip install \
-  https://github.com/reshuibuduo/tmcra-mcp-server/releases/download/v0.5.1/tmcra_mcp_server-0.5.1-py3-none-any.whl
+  https://github.com/reshuibuduo/tmcra-mcp-server/releases/download/v1.0.0-rc.1/tmcra_mcp_server-1.0.0rc1-py3-none-any.whl
 ```
 
 ### Directly from GitHub with `uvx`
 
 ```bash
-uvx --from "git+https://github.com/reshuibuduo/tmcra-mcp-server@v0.5.1" tmcra-mcp
+uvx --from "git+https://github.com/reshuibuduo/tmcra-mcp-server@v1.0.0-rc.1" tmcra-mcp
 ```
 
 ## Authorize
@@ -84,6 +88,8 @@ tmcra-mcp-setup status --mode explicit
 
 | Tool | Purpose |
 | --- | --- |
+| `tmcra_memory_control` | Inspect or explicitly change session modes, tasks and recall budgets. |
+| `tmcra_feedback` | Preview exact evidence and request interactive confirmation before targeted feedback. |
 | `tmcra_recall` | Return at most eight prompt-ready evidence windows for the current query. |
 | `tmcra_ingest` | Persist messages that already occurred, preserving role and Agent attribution. |
 | `tmcra_turn_prepare` | Recall before an answer and durably bind the real user turn. |

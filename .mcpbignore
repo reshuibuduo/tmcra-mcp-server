@@ -4,7 +4,10 @@
 .venv/
 build/
 dist/
+release/
 tests/
+test-artifacts/
+scripts/
 *.egg-info/
 **/__pycache__/
 **/*.py[cod]

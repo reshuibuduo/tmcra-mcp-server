@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .receipts import ReceiptValidationError, validate_job
+from .controls import may_write, policy, control_key
 
 
 RECEIPT_CONTRACT_SCHEMA = "tmcra.receipts.v1"
@@ -388,6 +389,16 @@ class DurableIngestQueue:
             row = self._row_for_item(item_id)
             state = row["state"]
         if state == "pending":
+            capture = (_load(row["recall_receipt_json"], "recall receipt") if row["recall_receipt_json"] else {}).get("_local_capture")
+            settings = getattr(client, "settings", None)
+            legacy_policy = policy(control_key(settings, row["scope_name"]), row["session_id"]) if not capture and settings else None
+            legacy_disabled = legacy_policy and (legacy_policy["generation"] > 0 or (legacy_policy.get("parentGeneration") or 0) > 0
+                or not may_write({**legacy_policy, "turnHash": None, "parentTurnHash": None}))
+            if (capture and not may_write(capture)) or legacy_disabled:
+                with self._lock:
+                    self._connection.execute("UPDATE ingest_queue SET state='dead_letter', messages_json='[]', last_error='discarded_by_memory_mode', updated_at=? WHERE item_id=?", (_now(), item_id))
+                    self._connection.commit()
+                return {"status": "discarded", "item_id": item_id, "submitted": False, "final": True}
             receipt = await client.ingest(
                 scope=row["scope_name"],
                 session_id=row["session_id"],
