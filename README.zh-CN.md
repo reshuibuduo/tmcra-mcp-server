@@ -12,7 +12,11 @@ TMCRA MCP Server 让支持 MCP 的 Agent 工具显式调用长期记忆。它可
 - **显式回合生命周期。** 回答前准备召回，回答后写入本轮真实的用户消息和 Agent 回答。
 - **写入失败可恢复。** 网络状态不确定时进入本地 SQLite 队列，使用同一幂等键继续提交。
 - **结果可核验。** 召回、写入和任务状态必须通过结构化 receipt 校验。
-- **七个真实 MCP 工具。** 召回、写入、准备回合、提交回合、恢复队列、查询任务、等待任务均有实现和测试。
+- **九个真实 MCP 工具。** 召回、写入、准备回合、提交回合、恢复队列、查询任务、等待任务、会话记忆控制与定向反馈均有实现和测试。
+
+`tmcra_memory_control` 提供 `normal`、`recall_only`、`off` 模式、任务续接和召回预算。控制与召回使用相同的准确 `session_id`；模式切换会阻止旧代待发送记录重放。
+
+`tmcra_feedback` 展示原始证据、修改内容和作用范围，并通过 MCP 交互询问用户。明确同意后才提交；拒绝、取消、超时或宿主不支持询问时保持原记忆。有效纠错需要配套 Memory API 更新，并检查 `effective` 与 `correction_index_status`。可视化工作台由 Codex / DSH 发行版提供；本 MCP 包自动发现共享的本地安装。明确本地身份只允许数字回环地址的 HTTP；托管连接保持 HTTPS。
 
 普通 MCP 客户端决定何时调用工具。仅连接 MCP Server 不会自动观察回答前后的生命周期。Codex 需要自动召回与写回时，请安装独立的 [TMCRA Codex Memory 插件](https://github.com/reshuibuduo/tmcra-plugin-codex)。
 
@@ -20,19 +24,19 @@ TMCRA MCP Server 让支持 MCP 的 Agent 工具显式调用长期记忆。它可
 
 ### MCPB 安装包
 
-从 [v0.5.1 Release](https://github.com/reshuibuduo/tmcra-mcp-server/releases/tag/v0.5.1) 下载 `tmcra-mcp-server-0.5.1.mcpb`，在支持 MCPB 的客户端中打开。安装包使用跨平台 `uv` 运行时，并通过敏感配置项接收 TMCRA API Key。
+从 [v1.0.0-rc.1 Release](https://github.com/reshuibuduo/tmcra-mcp-server/releases/tag/v1.0.0-rc.1) 下载 `tmcra-mcp-server-1.0.0-rc.1.mcpb`，在支持 MCPB 的客户端中打开。安装包使用跨平台 `uv` 运行时。托管模式在敏感字段中填写 API Key；Windows 完全本地模式先解压[独立运行包](https://github.com/reshuibuduo/tmcra/releases/tag/v1.0.0-rc.1)，双击 `Install-Local.cmd`，再重启 MCP 宿主。本地身份会自动发现并覆盖表单的云端地址与密钥，本地模式的 API Key 字段可留空。显式高级配置 `TMCRA_CONFIG_FILE` 仍优先生效。本地模型完整验收限制见运行包说明。
 
 ### Python wheel
 
 ```bash
 python -m pip install \
-  https://github.com/reshuibuduo/tmcra-mcp-server/releases/download/v0.5.1/tmcra_mcp_server-0.5.1-py3-none-any.whl
+  https://github.com/reshuibuduo/tmcra-mcp-server/releases/download/v1.0.0-rc.1/tmcra_mcp_server-1.0.0rc1-py3-none-any.whl
 ```
 
 ### 使用 `uvx` 直接运行 GitHub 版本
 
 ```bash
-uvx --from "git+https://github.com/reshuibuduo/tmcra-mcp-server@v0.5.1" tmcra-mcp
+uvx --from "git+https://github.com/reshuibuduo/tmcra-mcp-server@v1.0.0-rc.1" tmcra-mcp
 ```
 
 ## 授权

@@ -11,7 +11,7 @@ from urllib.parse import quote
 import httpx
 
 from . import __version__
-from .config import MCPSettings
+from .config import MCPSettings, assert_active_memory_connection
 from .receipts import (
     validate_bulk_ingest,
     validate_job,
@@ -67,6 +67,7 @@ class TMCRAHttpClient:
             },
             timeout=httpx.Timeout(settings.request_timeout_seconds),
             transport=transport,
+            trust_env=settings.deployment_mode != "local",
         )
 
     async def __aenter__(self) -> "TMCRAHttpClient":
@@ -185,6 +186,7 @@ class TMCRAHttpClient:
     ) -> dict[str, Any]:
         last_error: Exception | None = None
         for attempt in range(1, self.settings.max_attempts + 1):
+            assert_active_memory_connection(self.settings)
             try:
                 response = await self._client.request(
                     method, path, json=json_body, headers=headers

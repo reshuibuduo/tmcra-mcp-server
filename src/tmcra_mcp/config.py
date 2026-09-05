@@ -29,7 +29,28 @@ def default_config_path() -> Path:
         home = Path.home()
     except RuntimeError:
         home = Path.cwd()
+    binding_file = Path(os.getenv("TMCRA_LOCAL_BINDING_FILE") or home / ".config/tmcra/local-memory.json")
+    if binding_file.exists():
+        binding = _load_config(binding_file)
+        data_root = Path(str(binding.get("dataRoot") or ""))
+        profile = binding.get("profile")
+        if binding.get("schemaVersion") != 1 or binding.get("mode") != "local" or not data_root.is_absolute() or profile not in {"lite-cpu", "balanced-bge", "quality-qwen"}:
+            raise ConfigError("Invalid local memory selection; cloud fallback is disabled")
+        selected = data_root / "state" / profile / "secrets/client-plugin.json"
+        if not selected.is_file() or _load_config(selected).get("deploymentMode") != "local":
+            raise ConfigError("Selected local memory installation is not configured yet; cloud fallback is disabled")
+        return selected
     return home / ".config" / "tmcra" / "config.json"
+
+
+def assert_active_memory_connection(settings: "MCPSettings") -> None:
+    if os.getenv("TMCRA_CONFIG_FILE", "").strip():
+        return  # An explicit advanced configuration remains authoritative.
+    current = _load_config(default_config_path())
+    if current.get("deploymentMode") == "local" and (
+        settings.base_url != current.get("baseUrl") or settings.api_key != current.get("apiKey")
+    ):
+        raise ConfigError("Memory switched to local; restart the MCP host. Previous cloud requests are blocked")
 
 
 @dataclass(frozen=True)
@@ -41,10 +62,12 @@ class MCPSettings:
     max_attempts: int = 3
     default_agent_id: str | None = None
     integration_id: str | None = None
+    deployment_mode: str = "service"
 
     @classmethod
     def from_env(cls) -> "MCPSettings":
         config = _load_config(default_config_path())
+        local = config.get("deploymentMode") == "local"
         base_url = str(
             os.getenv("TMCRA_BASE_URL", "").strip()
             or config.get("baseUrl")
@@ -56,6 +79,9 @@ class MCPSettings:
             or config.get("apiKey")
             or ""
         ).strip()
+        if local:
+            base_url = str(config.get("baseUrl") or "").rstrip("/")
+            api_key = str(config.get("apiKey") or "").strip()
         default_scope = (
             os.getenv("TMCRA_DEFAULT_SCOPE", "").strip()
             or str(config.get("defaultScope") or "").strip()
@@ -81,14 +107,16 @@ class MCPSettings:
         )
         parsed = urlparse(base_url)
         if (
-            parsed.scheme != "https"
+            (parsed.scheme != "https" if not local else (
+                parsed.scheme != "http" or parsed.hostname not in {"127.0.0.1", "::1"}
+                or not parsed.port or parsed.path not in {"", "/"}))
             or not parsed.netloc
             or parsed.username is not None
             or parsed.password is not None
             or parsed.query
             or parsed.fragment
         ):
-            raise ConfigError("TMCRA_BASE_URL must be an HTTPS origin without credentials, query, or fragment")
+            raise ConfigError("TMCRA_BASE_URL must be an HTTPS origin, or numeric loopback HTTP for an explicit local identity, without credentials, query, or fragment")
         if not api_key:
             raise ConfigError(
                 "TMCRA credential is missing; sign in with the TMCRA app or set TMCRA_API_KEY"
@@ -109,6 +137,7 @@ class MCPSettings:
             attempts,
             default_agent_id,
             integration_id,
+            "local" if local else "service",
         )
 
 

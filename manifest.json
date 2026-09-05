@@ -2,7 +2,7 @@
   "manifest_version": "0.4",
   "name": "tmcra-memory",
   "display_name": "TMCRA Agent Memory",
-  "version": "0.5.1",
+  "version": "1.0.0-rc.1",
   "description": "Explicit long-term Agent memory for MCP hosts",
   "long_description": "Recall project evidence, preserve user and Agent roles, commit real turns, and reconcile durable asynchronous writes through the TMCRA Memory API.",
   "author": {
@@ -36,6 +36,14 @@
   },
   "tools": [
     {
+      "name": "tmcra_memory_control",
+      "description": "Inspect and explicitly update session memory modes, tasks and recall budgets"
+    },
+    {
+      "name": "tmcra_feedback",
+      "description": "Apply targeted memory feedback only after interactive host confirmation"
+    },
+    {
       "name": "tmcra_recall",
       "description": "Recall bounded prompt-ready evidence for one query"
     },
@@ -68,9 +76,9 @@
     "api_key": {
       "type": "string",
       "title": "TMCRA API Key",
-      "description": "Create an API key after signing in to TMCRA",
+      "description": "Optional for local installation: a private local identity is discovered automatically. Hosted users can provide an API key.",
       "sensitive": true,
-      "required": true
+      "required": false
     },
     "base_url": {
       "type": "string",

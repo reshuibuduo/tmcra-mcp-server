@@ -7,10 +7,28 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tmcra_mcp.config import ConfigError, MCPSettings
+from tmcra_mcp.config import ConfigError, MCPSettings, assert_active_memory_connection
 
 
 class MCPSettingsTests(unittest.TestCase):
+    def test_local_installer_discovery_and_fail_closed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            marker = root / "local-memory.json"
+            marker.write_text(json.dumps({"schemaVersion": 1, "mode": "local", "dataRoot": str(root), "profile": "lite-cpu"}))
+            with patch.dict(os.environ, {"TMCRA_LOCAL_BINDING_FILE": str(marker), "TMCRA_BASE_URL": "https://cloud.example.invalid", "TMCRA_API_KEY": "synthetic-cloud-key"}, clear=True):
+                with self.assertRaises(ConfigError):
+                    MCPSettings.from_env()
+                selected = root / "state/lite-cpu/secrets/client-plugin.json"
+                selected.parent.mkdir(parents=True)
+                selected.write_text(json.dumps({"deploymentMode": "local", "baseUrl": "http://127.0.0.1:2059", "apiKey": "synthetic-local-key", "defaultScope": "personal"}))
+                settings = MCPSettings.from_env()
+                self.assertEqual(settings.api_key, "synthetic-local-key")
+                self.assertEqual(settings.default_scope, "personal")
+                assert_active_memory_connection(settings)
+                with self.assertRaises(ConfigError):
+                    assert_active_memory_connection(MCPSettings("https://cloud.example.invalid", "synthetic-cloud-key"))
+
     def load(self, base_url: str) -> MCPSettings:
         with patch.dict(
             os.environ,
